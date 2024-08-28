@@ -297,3 +297,6 @@ List<QuotesModel> allQuotes = quotes
       (e) => QuotesModel.fromMap(data: e),
     )
     .toList();
+
+List<String> allQuotesCategory =
+    allQuotes.map((e) => e.category).toList().toSet().toList();
