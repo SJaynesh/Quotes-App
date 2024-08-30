@@ -7,6 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quotes_app/models/quotes_model.dart';
 import 'package:quotes_app/utills/quotes_utills.dart';
 import 'package:quotes_app/view/screen/home_page/componets/appbar.dart';
+import 'package:quotes_app/view/screen/home_page/componets/category.dart';
+
+import 'componets/quote_list_view.dart';
+import 'componets/quotes_grid_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +23,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
+    allQuotesCategory.insert(0, "All");
 
     Future.delayed(
       Duration.zero,
@@ -40,9 +46,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  bool mySwitch = false;
-  String cat = "Motivation";
-  int count = 0;
+  bool toggle = true;
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -81,87 +85,33 @@ class _HomePageState extends State<HomePage> {
         );
       },
       child: Scaffold(
-        appBar: appBar(),
+        appBar: appBar(
+            toggle: toggle,
+            toggleCase: () {
+              // if (toggle) {
+              //   toggle = false;
+              // } else {
+              //   toggle = true;
+              // }
+              toggle = !toggle;
+              setState(() {});
+            }),
+
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: allQuotesCategory.length,
-                itemBuilder: (context, index) => GestureDetector(
-                  onTap: () {
-                    cat = allQuotesCategory[index];
-                    setState(() {});
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.primaries[index % 18][100],
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.all(5),
-                    padding: const EdgeInsets.all(5),
-                    alignment: Alignment.center,
-                    child: Text(allQuotesCategory[index]),
-                  ),
-                ),
-              ),
+            categoryTile(
+              setState: () {
+                setState(() {});
+              },
             ),
-            Expanded(
-              flex: 14,
-              child: Scrollbar(
-                thickness: 5,
-                radius: const Radius.circular(20),
-                interactive: true,
-                thumbVisibility: true,
-                trackVisibility: true,
-                child: ListView.separated(
-                  itemCount: allQuotes.length,
-                  padding: const EdgeInsets.all(12),
-                  itemBuilder: (context, index) {
-                    QuotesModel quote = allQuotes[index];
-                    return (cat == quote.category)
-                        ? ExpansionTile(
-                            backgroundColor: Colors.primaries[index % 18][300],
-                            // trailing: const Icon(Icons.keyboard_arrow_down),
-                            tilePadding: const EdgeInsets.all(10),
-                            collapsedShape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            collapsedBackgroundColor:
-                                Colors.primaries[index % 18][200],
-                            leading: Text("${index + 1}"),
-                            title: Text(quote.quotes),
-                            children: [
-                              Text(quote.author),
-                              Text(quote.category),
-                            ],
-                          )
-                        : Container();
-                  },
-                  separatorBuilder: (context, index) =>
-                      (cat == allQuotes[index].category)
-                          ? const Divider(
-                              thickness: 2,
-                              color: Colors.grey,
-                              // color: Colors.black,
-                            )
-                          : Container(),
-                ),
-              ),
-            ),
+            // (toggle) ? quotesListTile() : quotesGridView(),
+            if (toggle) ...{
+              quotesListTile(),
+            } else ...{
+              quotesGridView(),
+            }
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            count++;
-            setState(() {});
-          },
-          child: const Icon(Icons.add),
         ),
         // Todo : ListView.builder
         // body: ListView.builder(

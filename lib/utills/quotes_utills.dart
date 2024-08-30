@@ -292,6 +292,8 @@ List<Map<String, dynamic>> quotes = [
 // A Collection of Attributes (Data Members) and Parameterized Constructor
 // and Factory Constructor.
 
+String cat = "All";
+
 List<QuotesModel> allQuotes = quotes
     .map(
       (e) => QuotesModel.fromMap(data: e),
