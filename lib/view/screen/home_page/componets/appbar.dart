@@ -16,7 +16,7 @@ AppBar appBar({
         onPressed: () {
           toggleCase();
         },
-        icon: (toggle) ? const Icon(Icons.grid_on) : const Icon(Icons.list),
+        icon: (toggle) ? const Icon(Icons.grid_view) : const Icon(Icons.list),
       ),
     ],
     backgroundColor: Colors.white,

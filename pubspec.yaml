@@ -36,6 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   flutter_screenutil: ^5.9.3
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -87,5 +88,25 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
+  fonts:
+    - family: lionKing
+      fonts:
+        - asset: assets/fonts/lk.ttf
+    - family: laObrige
+      fonts:
+        - asset: assets/fonts/lo.otf
+    - family: Oswald
+      fonts:
+        - asset: assets/fonts/os.ttf
+    - family: Chiro
+      fonts:
+      - asset: assets/fonts/cr.ttf
+    - family: Sevillana
+      fonts:
+        - asset: assets/fonts/sr.ttf
+    - family: DancingScript
+      fonts:
+        - asset: assets/fonts/ds.ttf
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -107,9 +107,9 @@ class _HomePageState extends State<HomePage> {
             ),
             // (toggle) ? quotesListTile() : quotesGridView(),
             if (toggle) ...{
-              quotesListTile(),
+              quotesListTile(context2: context),
             } else ...{
-              quotesGridView(),
+              quotesGridView(context2: context),
             }
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:quotes_app/utills/fonts_utills.dart';
 
 import 'headers.dart';
 
@@ -13,6 +14,9 @@ class MyApp extends StatelessWidget {
       designSize: Size(width, height),
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: Fonts.lionKing.name,
+        ),
         routes: Routes.myRoutes,
       ),
     );
