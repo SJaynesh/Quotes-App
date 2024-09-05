@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quotes_app/models/quotes_model.dart';
+import 'package:quotes_app/utills/fonts_utills.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -13,6 +16,8 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   Color containerBGColor = Colors.white;
   double opacity = 1;
+  String font = Fonts.lionKing.name;
+  Color fontColor = Colors.black;
   @override
   Widget build(BuildContext context) {
     QuotesModel quote =
@@ -33,6 +38,8 @@ class _DetailPageState extends State<DetailPage> {
             onPressed: () {
               containerBGColor = Colors.white;
               opacity = 1;
+              font = Fonts.lionKing.name;
+              fontColor = Colors.black;
               setState(() {});
             },
             icon: const Icon(Icons.refresh),
@@ -56,13 +63,31 @@ class _DetailPageState extends State<DetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
+                  SelectableText(
                     quote.quotes,
+                    cursorWidth: 2,
+                    cursorColor: Colors.red,
+                    cursorRadius: const Radius.circular(20),
+                    showCursor: true,
+                    toolbarOptions: const ToolbarOptions(
+                      copy: true,
+                      cut: true,
+                      paste: false,
+                      selectAll: true,
+                    ),
                     style: TextStyle(
+                      color: fontColor,
                       fontSize: 25.sp,
+                      fontFamily: font,
                     ),
                   ),
-                  Text("~ ${quote.author}"),
+                  Text(
+                    "~ ${quote.author}",
+                    style: TextStyle(
+                      fontFamily: font,
+                      color: fontColor,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -122,12 +147,95 @@ class _DetailPageState extends State<DetailPage> {
                       fontSize: 14.sp,
                     ),
                   ),
-                  Text(
-                    "Fonts Color : ",
-                    style: GoogleFonts.nobile(
-                      fontSize: 14.sp,
+                  SizedBox(
+                    height: 60.h,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: Fonts.values.length,
+                      itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextButton(
+                            onPressed: () {
+                              font = Fonts.values[index].name;
+                              setState(() {});
+                            },
+                            child: Text(
+                              "Abc",
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontFamily: Fonts.values[index].name,
+                                color: Colors.black,
+                              ),
+                            ),
+                          )),
                     ),
                   ),
+                  Row(
+                    children: [
+                      Text(
+                        "Fonts Color : ",
+                        style: GoogleFonts.nobile(
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text(
+                                  'Pick a color!',
+                                  style: GoogleFonts.roboto(),
+                                ),
+                                content: SingleChildScrollView(
+                                  child: ColorPicker(
+                                    pickerColor: containerBGColor,
+                                    onColorChanged: (value) {
+                                      fontColor = value;
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.color_lens_outlined,
+                            color: fontColor,
+                          ))
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          await Clipboard.setData(
+                            ClipboardData(
+                              text: "${quote.quotes}\n${quote.author}",
+                            ),
+                          ).then(
+                            (value) {
+                              SnackBar snackBar = const SnackBar(
+                                content: Text("Quote copy successfully... "),
+                                backgroundColor: Colors.green,
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            },
+                          );
+                        },
+                        child: Text(
+                          "Copy",
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.deepPurple,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
